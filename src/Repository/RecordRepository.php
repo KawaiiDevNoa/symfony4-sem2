@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Record;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,21 +21,20 @@ class RecordRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Record[] Returns an array of Record objects
+    //  *Nouveautés: albums de sortis il y a moins d'un mois
     //  */
-    /*
-    public function findByExampleField($value)
+    
+    public function findNews()
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->createQueryBuilder('r') // r = alias de record
+            ->where('r.releaseAt >= :last_month')
+            ->setParameter('last_month', new \DateTime('-1 month'))
+            ->orderBy('r.releaseAt','DESC')
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
+    
 
     /*
     public function findOneBySomeField($value): ?Record
