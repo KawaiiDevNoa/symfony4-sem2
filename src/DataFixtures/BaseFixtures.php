@@ -59,7 +59,7 @@ abstract class BaseFixtures extends Fixture{
       protected function createMany(int $count, string $groupName,callable $factory){
           for ($i = 0; $i < $count; $i++){
               // on exécute $factory qui doit retouner l'entité générée
-              $entity = $factory();
+              $entity = $factory($i);
 
               // vrif que l'ntité ait été retournée
               if($entity === null){
