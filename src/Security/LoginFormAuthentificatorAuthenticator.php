@@ -83,11 +83,20 @@ class LoginFormAuthentificatorAuthenticator extends AbstractFormLoginAuthenticat
         return $user;
     }
   /**
-   * 4. vérif la val au mdp
+   * 4. vérif la val du mdp
    */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        $validPassword = $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if ($validPassword === false ){
+            throw new CustomUserMessageAuthenticationException('Mot de passe érroné.');
+        }
+        /** @var User $user */
+        if($user->getIsConfirmed() !== true){
+            throw new CustomUserMessageAuthenticationException('Vous devez confirmer votre adresse pour vous connecter');
+        }
+
+        return true;
     }
 
     /**
